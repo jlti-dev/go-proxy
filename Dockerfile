@@ -5,7 +5,11 @@ RUN go mod download && CGO_ENABLED=1 GOOS=linux GOFLAGS=-mod=mod go build -a -in
 
 FROM debian:latest
 WORKDIR /docker
+RUN apt update && apt install -y iproute2
 COPY --from=builder /app/main /docker/main
+
+copy start.sh /docker/start.sh
+
 EXPOSE 8080
 
-CMD ["/docker/main"]
+CMD ["/bin/bash", "/docker/start.sh"]
