@@ -6,6 +6,7 @@ import (
 
 	"net/http"
 	"crypto/tls"
+	"net/url"
 
 	"io"
 	"path/filepath"
@@ -39,8 +40,12 @@ func offlineCache(filename string){
 	go downloadFile(filename)
 }
 func downloadFile(urlsuffix string){
-	url := fmt.Sprintf("%s%s",baseUrl, urlsuffix)
-	
+	encodedUrl := fmt.Sprintf("%s%s",baseUrl, urlsuffix)
+	url, err := url.QueryUnescape(encodedUrl)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 	log.Println("Start Downloading %s", url)
 
 	if err := os.MkdirAll(filepath.Dir(fmt.Sprintf("%s%s", STATIC_DIR, urlsuffix)), 0660); err != nil {
