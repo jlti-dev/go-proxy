@@ -38,7 +38,7 @@ func runApi(port int) {
 	router.Use(loggingMiddleware)
 	router.Use(cachingMiddleware)
 
-router.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir(STATIC_DIR))))
-log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), router))
+	router.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir(STATIC_DIR))))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), router))
 }
 
